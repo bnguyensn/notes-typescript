@@ -137,3 +137,53 @@ const G: I = function(a: number, b: string) {
 ```
 
 ### Indexable types
+
+Only `string` and `number` types are supported for index signatures.
+
+```
+interface I {
+  [index: number]: string; // when an I is indexed with a number, it will return a string
+}
+
+interface ReadOnlyI {
+  readonly [index: number]: string; // disallow assigment to indices
+}
+
+const a: ReadOnlyI = ["", ""];
+a[2] = ""; // error
+```
+
+The type returned from a numeric indexer must be a subtype of the type returned from the string indexer. This is because JavaScript converts `number` indices to `string` indices before indexing. For example: `a[1]` will be converted to `a["1"]`.
+
+```
+class A {
+  // ...
+}
+
+class B extends A {
+  // ...
+}
+
+// works!
+interface J {
+  [index: string]: A;
+  [index: number]: B;
+}
+
+// error
+interface J {
+  [index: number]: A;
+  [index: string]: B;
+}
+```
+
+`string ` index signatures enforce that all properties match their return type
+
+```
+interface I {
+  [index: string]: number;
+  propA: number; // works!
+  propB: string; // error: propB's type is not a subtype of the indexer
+```
+
+
