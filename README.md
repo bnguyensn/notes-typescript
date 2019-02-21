@@ -170,20 +170,21 @@ interface J {
   [index: number]: B;
 }
 
-// error
+// error: A is not a subtype of B
 interface J {
   [index: number]: A;
   [index: string]: B;
 }
 ```
 
-`string ` index signatures enforce that all properties match their return type
+`string` index signatures enforce that all properties match their return type
 
 ```
 interface I {
   [index: string]: number;
   propA: number; // works!
   propB: string; // error: propB's type is not a subtype of the indexer
+}
 ```
 
 
