@@ -42,7 +42,7 @@ class Warrior extends Character {
 }
 
 class Mage extends Character {
-  constructor(name: string) {
+  constructor(name: string) { 
     super(name, 'mage');
   }
   
