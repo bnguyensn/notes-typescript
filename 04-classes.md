@@ -19,12 +19,14 @@ class Character {
   }
   
   saySpec() {
-    console.log(`I'm a ${this.spec}`);
+    console.log(`I'm a ${this.spec}.`);
   }
 }
 ```
 
 #### Sub-class
+
+A sub-class inherits its parent's members.
 
 `super()` in sub-classes' constructors must be called before accessing `this`.
 
@@ -66,7 +68,7 @@ Accessing private members from outside their class is not allowed.
 
 Different classes with "similar" private members are not compatible. The private members must come from the same place.
  
- `protected` members follow the same rules.
+ `protected` members follow the same rule.
 
 ```typescript
 class WarriorWithPrivateSecret extends Warrior {
@@ -94,7 +96,7 @@ let secretMage = new MageWithPrivateSecret('Kael Sunstrider', 'demonic dealings'
 console.log(secretWarrior.secret);
 
 // Error: 'WarriorWithPrivateSecret' and 'MageWithPrivateSecret' are not compatible
-// WarriorWithPrivateSecret's and MageWithPrivateSecret's secret member do not come from the same place
+// WarriorWithPrivateSecret's and MageWithPrivateSecret's 'secret' member do not come from the same place
 secretWarrior = secretMage;
 ```
 
@@ -124,7 +126,7 @@ class DummyWarriorWithProtectedSecret extends WarriorWithProtectedSecret {
 
 const dummySecretWarrior = new DummyWarriorWithProtectedSecret('cheater');
 
-// Error: 'secret' is protected
+// Works!
 console.log(dummySecretWarrior.secret);
 ```
 
@@ -180,4 +182,77 @@ class HumanWarrior extends Warrior {
     console.log(`My blood type is ${this.bloodType}.`);
   }
 }
+```
+
+### Accessors
+
+Identical to JavaScript.
+
+### Static properties
+
+Identical to JavaScript.
+
+### Abstract class
+
+Abstract classes can't be instantiated. It is used as a base for other classes.
+
+Unlike interfaces, abstract classes can contain implementation details.
+
+```typescript
+abstract class Character {
+  protected constructor(name: string) {} // Constructors should be marked as protected because it's useless to leave them as public anyway
+  
+  abstract sayHello(): void; // Must be implemented in derived classes
+  
+  sayGoodbye(): void {
+    console.log('Goodbye!');
+  };
+}
+
+// Error: can't instantiate abstract classes
+const grom = new Character('Grom Hellscream');
+
+class Warrior extends Character {
+  constructor(name: string) {
+    super(name);
+  }
+  
+  sayHello(): void {
+    console.log('Hello there!');
+  }
+  
+  sayGoodluck(): void {
+    console.log('Good luck!');
+  }
+}
+
+const varian = new Warrior('Varian Wrynn');
+varian.sayHello();
+varian.sayGoodluck(); // Error: method doesn't exist on declared abstract type
+varian.sayGoodbye();
+```
+
+### Constructor function
+
+When a class is declared:
+* Its *instance* side is declared.
+* Its *static* side is also declared. This is the *constructor function* part. 
+
+### Mix with interface
+
+Classes can be used in the same places as interfaces.
+
+```typescript
+class Character {
+  name: string;
+}
+
+interface CharacterWithSpec extends Character {
+  spec: string;
+}
+
+const varian: CharacterWithSpec = {
+  name: 'Varian Wrynn',
+  spec: 'warrior',
+};
 ```
